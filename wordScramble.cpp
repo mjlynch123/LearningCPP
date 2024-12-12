@@ -10,7 +10,29 @@
     Bonus: Add a timer to track how quickly the player solves it.
 */
 
-int main()
+void scramble(std::vector<char> chosenWord)
+{
+    // Shuffling the characters
+    std::random_device rd;                // Creates a random device to obtain the seed for the random number generator
+    std::default_random_engine rng(rd()); // Initializes the random number generator with the seed from the random device
+    for (size_t i = 0; i < chosenWord.size(); i++)
+    {
+        // Create a uniform distribution for indices in the range [i, letters.size() - 1]
+        // This ensures we only shuffle the remaining portion of the vector
+        std::uniform_int_distribution<size_t> dist(i, chosenWord.size() - 1);
+        // Swap the current element at index 'i' with a randomly chosen element in the range [i, letters.size() - 1]
+        std::swap(chosenWord[i], chosenWord[dist(rng)]);
+    }
+
+    for (char c : chosenWord)
+    {
+        std::cout << c;
+    }
+
+    std::cout << "\n";
+}
+
+void getWord()
 {
     std::vector<std::string> words = {"programming", "algorithm", "developer", "software", "computer"};
     std::vector<char> scrambledWord;
@@ -24,20 +46,15 @@ int main()
         scrambledWord.push_back(word[i]);
     }
 
-    // Shuffling the characters
-    std::random_device rd;                // Creates a random device to obtain the seed for the random number generator
-    std::default_random_engine rng(rd()); // Initializes the random number generator with the seed from the random device
-    for (size_t i = 0; i < scrambledWord.size(); i++)
-    {
-        // Create a uniform distribution for indices in the range [i, letters.size() - 1]
-        // This ensures we only shuffle the remaining portion of the vector
-        std::uniform_int_distribution<size_t> dist(i, scrambledWord.size() - 1);
-        // Swap the current element at index 'i' with a randomly chosen element in the range [i, letters.size() - 1]
-        std::swap(scrambledWord[i], scrambledWord[dist(rng)]);
-    }
+    scramble(scrambledWord);
+}
 
-    for (char c : scrambledWord)
-    {
-        std::cout << c;
-    }
+int main()
+{
+    std::cout << "Welcome to Word Scramble!\n";
+    std::cout << "Unscramble the word to win!\n";
+
+    getWord();
+
+    return 0;
 }
