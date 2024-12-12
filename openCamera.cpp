@@ -4,13 +4,46 @@
 
 int main()
 {
-    cv::Mat image = cv::Mat::zeros(300, 300, CV_8UC3); // Create a blank image
-    if (image.empty())
+    // Open the default camera (camera index 0)
+    cv::VideoCapture cap(0);
+
+    if (!cap.isOpened())
     {
-        std::cerr << "Error: Unable to create image!" << std::endl;
+        std::cerr << "Error opening the camera\n";
         return -1;
     }
-    cv::imshow("Test Window", image);
-    cv::waitKey(0); // Wait for a key press
+
+    std::cout << "Press 'q' to quit\n";
+
+    cv::Mat frame;
+    while (true)
+    {
+        cap >> frame; // Get a new frame from the camera
+
+        if (frame.empty())
+        {
+            std::cerr << "Error reading the frame\n";
+            break;
+        }
+
+        cv::imshow("Camera", frame); // Display the frame
+
+        // Set the desired window size
+        int windowWidth = 640;
+        int windowHeight = 480;
+
+        // Create a named window with a fixed size
+        cv::namedWindow("Camera", cv::WINDOW_NORMAL);
+        cv::resizeWindow("Camera", windowWidth, windowHeight);
+
+        // Exit the loop if 'q' is pressed
+        if (cv::waitKey(10) == 'q')
+        {
+            break;
+        }
+    }
+
+    cap.release();           // release the camera
+    cv::destroyAllWindows(); // Close all the windows
     return 0;
 }
