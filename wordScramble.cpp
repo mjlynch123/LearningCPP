@@ -6,10 +6,9 @@
 
 /*
     Description: The program scrambles a word, and the player tries to guess the original word.
-    Skills: Strings, randomization, input/output.
-    Bonus: Add a timer to track how quickly the player solves it.
 */
 
+// Scrambling the word
 void scramble(std::vector<char> chosenWord)
 {
     // Shuffling the characters
@@ -32,10 +31,11 @@ void scramble(std::vector<char> chosenWord)
     std::cout << "\n";
 }
 
-void getWord()
+// Getting a random word from a list of words
+std::vector<char> getWord()
 {
     std::vector<std::string> words = {"programming", "algorithm", "developer", "software", "computer"};
-    std::vector<char> scrambledWord;
+    std::vector<char> splicedWord;
     srand(time(NULL)); // makes sure number is different each time
 
     int randomIndex = rand() % words.size();
@@ -43,18 +43,45 @@ void getWord()
 
     for (int i = 0; i < word.size(); i++)
     {
-        scrambledWord.push_back(word[i]);
+        splicedWord.push_back(word[i]);
     }
 
-    scramble(scrambledWord);
+    scramble(splicedWord);
+    return splicedWord;
+}
+
+// Checking if the answer ic correct and returning a boolean value
+bool checkAnswer(std::string answer, std::vector<char> chosenWord)
+{
+    std::string word(chosenWord.begin(), chosenWord.end());
+    if (answer == word)
+    {
+        std::cout << "Congratulations! You unscrambled the word!\n";
+        return true;
+    }
+    else if (answer == "")
+    {
+        return 0; // return nothing if the answer is empty
+    }
+    else
+    {
+        std::cout << "Sorry, that's not the correct word.\n";
+        return false;
+    }
 }
 
 int main()
 {
     std::cout << "Welcome to Word Scramble!\n";
     std::cout << "Unscramble the word to win!\n";
+    std::string userAnswer;
 
-    getWord();
+    std::vector<char> chosenWord = getWord();
+    while (!checkAnswer(userAnswer, chosenWord))
+    {
+        std::cout << "Enter your guess: ";
+        std::cin >> userAnswer;
+    }
 
     return 0;
 }
