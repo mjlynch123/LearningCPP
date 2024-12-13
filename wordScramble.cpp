@@ -63,6 +63,11 @@ bool checkAnswer(std::string answer, std::vector<char> chosenWord)
     {
         return 0; // return nothing if the answer is empty
     }
+    else if (answer == "q")
+    {
+        std::cout << "You quit the game.\n";
+        return true;
+    }
     else
     {
         std::cout << "Sorry, that's not the correct word.\n";
@@ -70,13 +75,14 @@ bool checkAnswer(std::string answer, std::vector<char> chosenWord)
     }
 }
 
+// This is where the player will guess the word
 void guesses()
 {
     std::string userAnswer;
     int tries = 5;
     std::vector<char> chosenWord = getWord();
 
-    while (!checkAnswer(userAnswer, chosenWord) && tries > 0)
+    while (!checkAnswer(userAnswer, chosenWord) && tries > 0 && userAnswer != "q")
     {
         std::cout << tries << "\n";
         std::cout << "Enter your guess: ";
