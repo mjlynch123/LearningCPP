@@ -70,18 +70,27 @@ bool checkAnswer(std::string answer, std::vector<char> chosenWord)
     }
 }
 
+void guesses()
+{
+    std::string userAnswer;
+    int tries = 5;
+    std::vector<char> chosenWord = getWord();
+
+    while (!checkAnswer(userAnswer, chosenWord) && tries > 0)
+    {
+        std::cout << tries << "\n";
+        std::cout << "Enter your guess: ";
+        std::cin >> userAnswer;
+        tries--;
+    }
+}
+
 int main()
 {
     std::cout << "Welcome to Word Scramble!\n";
     std::cout << "Unscramble the word to win!\n";
-    std::string userAnswer;
 
-    std::vector<char> chosenWord = getWord();
-    while (!checkAnswer(userAnswer, chosenWord))
-    {
-        std::cout << "Enter your guess: ";
-        std::cin >> userAnswer;
-    }
+    guesses();
 
     return 0;
 }
